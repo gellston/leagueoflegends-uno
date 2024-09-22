@@ -23,15 +23,16 @@ public abstract class AppBootstrapper
         Container.RegisterSingleton<IViewModelInitializer, DefaultViewModelInitializer>();
     }
 
-    protected abstract void RegisterViewModels();
-    protected abstract void RegisterDependencies();
+    protected abstract void RegisterViewModels(IViewModelMapper viewModelMapper);
+    protected abstract void RegisterDependencies(IContainer container);
+    protected abstract void LayerInitializer(IContainer container, ILayerManager layer);
+    protected abstract void OnStartup();
 
     public void Run()
     {
-        RegisterViewModels();
-        RegisterDependencies();
+        RegisterViewModels(ViewModelMapper);
+        RegisterDependencies(Container);
+        LayerInitializer(Container, Layer);
         OnStartup();
     }
-
-    protected abstract void OnStartup();
 }
